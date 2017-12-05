@@ -1,0 +1,11 @@
+C:\Git\ITTWEB\ITTWEB-Assignment-06\bin\Debug\netcoreapp2.0\ITTWEB-Assignment-06.deps.json
+C:\Git\ITTWEB\ITTWEB-Assignment-06\bin\Debug\netcoreapp2.0\ITTWEB-Assignment-06.runtimeconfig.json
+C:\Git\ITTWEB\ITTWEB-Assignment-06\bin\Debug\netcoreapp2.0\ITTWEB-Assignment-06.runtimeconfig.dev.json
+C:\Git\ITTWEB\ITTWEB-Assignment-06\bin\Debug\netcoreapp2.0\ITTWEB-Assignment-06.dll
+C:\Git\ITTWEB\ITTWEB-Assignment-06\bin\Debug\netcoreapp2.0\ITTWEB-Assignment-06.pdb
+C:\Git\ITTWEB\ITTWEB-Assignment-06\obj\Debug\netcoreapp2.0\ITTWEB-Assignment-06.csproj.CoreCompileInputs.cache
+C:\Git\ITTWEB\ITTWEB-Assignment-06\obj\Debug\netcoreapp2.0\ITTWEB-Assignment-06.AssemblyInfoInputs.cache
+C:\Git\ITTWEB\ITTWEB-Assignment-06\obj\Debug\netcoreapp2.0\ITTWEB-Assignment-06.AssemblyInfo.cs
+C:\Git\ITTWEB\ITTWEB-Assignment-06\obj\Debug\netcoreapp2.0\ITTWEB-Assignment-06.dll
+C:\Git\ITTWEB\ITTWEB-Assignment-06\obj\Debug\netcoreapp2.0\ITTWEB-Assignment-06.pdb
+C:\Git\ITTWEB\ITTWEB-Assignment-06\obj\Debug\netcoreapp2.0\ITTWEB-Assignment-06.csprojResolveAssemblyReference.cache
