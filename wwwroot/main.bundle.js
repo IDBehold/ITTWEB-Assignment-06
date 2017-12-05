@@ -235,9 +235,8 @@ var AuthenticationService = (function () {
     function AuthenticationService(http) {
         this.http = http;
     }
-    AuthenticationService.prototype.register = function (name, email, password) {
-        return this.http.post('https://salty-garden-88598.herokuapp.com/api/register', {
-            name: name,
+    AuthenticationService.prototype.register = function (email, password) {
+        return this.http.post('/api/account/register', {
             email: email,
             password: password
         })
@@ -251,7 +250,7 @@ var AuthenticationService = (function () {
         });
     };
     AuthenticationService.prototype.login = function (email, password) {
-        return this.http.post('https://salty-garden-88598.herokuapp.com/api/login', { email: email, password: password })
+        return this.http.post('api/account/login', { email: email, password: password })
             .map(function (response) {
             // login successful if there's a jwt token in the response
             var user = response.json();
@@ -317,7 +316,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/create-exercise/create-exercise.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<br><br><br>\r\n\r\n<div class=\"form-group\">\r\n\r\n  <select #id>\r\n    <option *ngFor=\"let workout of workouts\" value=\"{{workout._id}}\">{{workout.name}}</option>\r\n  </select>\r\n  <br>\r\n  <label>Exercise:</label>\r\n  <input #exercise class=\"form-control\"/>\r\n  <br>\r\n  <label>Description:</label>\r\n  <input #description class=\"form-control\"/>\r\n  <br>\r\n  <label>Set:</label>\r\n  <input #set class=\"form-control\"/>\r\n  <br>\r\n  <label>Rep/Times:</label>\r\n  <input #rep class=\"form-control\"/>\r\n  <br>\r\n  <button (click)=\"createExercise(id.value, exercise.value ,description.value,set.value,rep.value)\" class=\"btn btn-primary\">Save</button>\r\n</div>\r\n"
+module.exports = "<br><br><br>\r\n\r\n<div class=\"form-group\">\r\n\r\n  <select #id>\r\n    <option *ngFor=\"let workout of workouts\" value=\"{{workout.id}}\">{{workout.name}}</option>\r\n  </select>\r\n  <br>\r\n  <label>Exercise:</label>\r\n  <input #exercise class=\"form-control\"/>\r\n  <br>\r\n  <label>Description:</label>\r\n  <input #description class=\"form-control\"/>\r\n  <br>\r\n  <label>Set:</label>\r\n  <input #set class=\"form-control\"/>\r\n  <br>\r\n  <label>Rep/Times:</label>\r\n  <input #rep class=\"form-control\"/>\r\n  <br>\r\n  <button (click)=\"createExercise(id.value, exercise.value ,description.value,set.value,rep.value)\" class=\"btn btn-primary\">Save</button>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -491,7 +490,7 @@ var LoginComponent = (function () {
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(function (data) {
-            _this.router.navigate(['/']);
+            _this.router.navigate(['/workouts']);
         }, function (error) {
             _this.loading = false;
         });
@@ -514,7 +513,7 @@ var _a, _b;
 /***/ "../../../../../src/app/register/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-md-6 col-md-offset-3\">\r\n  <h2>Register</h2>\r\n  <form name=\"form\" (ngSubmit)=\"f.form.valid && register()\" #f=\"ngForm\" novalidate>\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\r\n      <label for=\"name\">Name</label>\r\n      <input type=\"text\" class=\"form-control\" name=\"name\" [(ngModel)]=\"model.name\" #name=\"ngModel\" required />\r\n      <div *ngIf=\"f.submitted && !name.valid\" class=\"help-block\">Name is required</div>\r\n    </div>\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\r\n      <label for=\"email\">Email</label>\r\n      <input type=\"text\" class=\"form-control\" name=\"email\" [(ngModel)]=\"model.email\" #email=\"ngModel\" required />\r\n      <div *ngIf=\"f.submitted && !email.valid\" class=\"help-block\">Email is required</div>\r\n    </div>\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !password.valid }\">\r\n      <label for=\"password\">Password</label>\r\n      <input type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\" required />\r\n      <div *ngIf=\"f.submitted && !password.valid\" class=\"help-block\">Password is required</div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <button [disabled]=\"loading\" class=\"btn btn-primary\">Register</button>\r\n      <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\r\n      <a [routerLink]=\"['/login']\" class=\"btn btn-link\">Cancel</a>\r\n    </div>\r\n  </form>\r\n</div>\r\n"
+module.exports = "<div class=\"col-md-6 col-md-offset-3\">\r\n  <h2>Register</h2>\r\n  <form name=\"form\" (ngSubmit)=\"f.form.valid && register()\" #f=\"ngForm\" novalidate>\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\r\n      <label for=\"email\">Email</label>\r\n      <input type=\"text\" class=\"form-control\" name=\"email\" [(ngModel)]=\"model.email\" #email=\"ngModel\" required />\r\n      <div *ngIf=\"f.submitted && !email.valid\" class=\"help-block\">Email is required</div>\r\n    </div>\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !password.valid }\">\r\n      <label for=\"password\">Password</label>\r\n      <input type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\" required />\r\n      <div *ngIf=\"f.submitted && !password.valid\" class=\"help-block\">Password is required</div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <button [disabled]=\"loading\" class=\"btn btn-primary\">Register</button>\r\n      <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\r\n      <a [routerLink]=\"['/login']\" class=\"btn btn-link\">Cancel</a>\r\n    </div>\r\n  </form>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -548,9 +547,9 @@ var RegisterComponent = (function () {
     RegisterComponent.prototype.register = function () {
         var _this = this;
         this.loading = true;
-        this.auth.register(this.model.name, this.model.email, this.model.password)
+        this.auth.register(this.model.email, this.model.password)
             .subscribe(function (data) {
-            _this.router.navigate(['/']);
+            _this.router.navigate(['/workouts']);
         }, function (error) {
             _this.loading = false;
         });
@@ -601,30 +600,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var WorkoutsService = (function () {
+    //private apiUrl = 'http://salty-garden-88598.herokuapp.com/api'; // URL to API
     function WorkoutsService(http, auth) {
         this.http = http;
         this.auth = auth;
-        this.testUrl = 'api/hello';
-        this.apiUrl = 'http://salty-garden-88598.herokuapp.com/api'; // URL to API
+        this.workoutUrl = 'api/workouts';
+        this.exerciseUrl = 'api/exercises';
     }
     WorkoutsService.prototype.getWorkouts = function () {
-        return this.http.get(this.apiUrl)
+        return this.http.get(this.workoutUrl)
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     WorkoutsService.prototype.getWorkout = function (id) {
-        var url = this.apiUrl + "/" + id;
+        var url = this.workoutUrl + "/" + id;
         return this.http.get(url)
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     WorkoutsService.prototype.createWorkout = function (name) {
-        var url = this.apiUrl + "/workout";
         var headers = this.getHeaders();
         return this.http
-            .post(url, JSON.stringify({ name: name }), {
+            .post(this.workoutUrl, JSON.stringify({ name: name }), {
             headers: headers,
         })
             .toPromise()
@@ -632,9 +631,8 @@ var WorkoutsService = (function () {
             .catch(this.handleError);
     };
     WorkoutsService.prototype.createExercise = function (id, exercise, description, set, reps) {
-        var url = this.apiUrl + "/exercise";
         return this.http
-            .post(url, JSON.stringify({
+            .post(this.exerciseUrl, JSON.stringify({
             id: id,
             exercise: exercise,
             description: description,
@@ -646,14 +644,14 @@ var WorkoutsService = (function () {
             .catch(this.handleError);
     };
     WorkoutsService.prototype.countUp = function (id) {
-        var url = this.apiUrl + "/countUp/" + id;
+        var url = this.workoutUrl + "/" + id;
         return this.http.put(url, {}, { headers: this.getHeaders() })
             .toPromise()
             .then(function (res) { return res.json(); })
             .catch(this.handleError);
     };
     WorkoutsService.prototype.deleteWorkout = function (id) {
-        var url = this.apiUrl + "/" + id + "}";
+        var url = this.workoutUrl + "/" + id + "}";
         return this.http.delete(url, { headers: this.getHeaders() })
             .toPromise()
             .then(function () { return null; })
@@ -668,11 +666,6 @@ var WorkoutsService = (function () {
         headers.append('Content-type', 'application/json');
         headers.append('Authorization', 'Bearer ' + this.auth.getToken());
         return headers;
-    };
-    WorkoutsService.prototype.sayHello = function () {
-        return this.http.get(this.testUrl).map(function (response) {
-            return response.text();
-        });
     };
     return WorkoutsService;
 }());
@@ -707,7 +700,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/workouts/workouts.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngFor=\"let workout of workouts\" >\r\n  <h3>{{workout.name}}</h3>\r\n  <!--<button (click)=\"deleteWorkout(workout._id)\" type='button' class=\"btn btn-danger glyphicon glyphicon-trash\"></button> -->\r\n  <button *ngIf=\"isLoggedIn()\" (click)=\"countUp(workout._id)\" type='button' class=\"btn btn-info glyphicon glyphicon-arrow-up\">  {{workout.count}}</button>\r\n  <div class=\"table-responsive\">\r\n    <table class=\"table\">\r\n      <thead>\r\n      <tr>\r\n        <td>Exercise</td>\r\n        <td>Description</td>\r\n        <td>Set</td>\r\n        <td>Reps/Time</td>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr *ngFor=\"let exercise of workout.exercises\">\r\n        <td>{{exercise.exercise}}</td>\r\n        <td>{{exercise.description}}</td>\r\n        <td>{{exercise.set}}</td>\r\n        <td>{{exercise.reps}}</td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div *ngFor=\"let workout of workouts\" >\r\n  <h3>{{workout.name}}</h3>\r\n  <!--<button (click)=\"deleteWorkout(workout._id)\" type='button' class=\"btn btn-danger glyphicon glyphicon-trash\"></button> -->\r\n  <button *ngIf=\"isLoggedIn()\" (click)=\"countUp(workout.id)\" type='button' class=\"btn btn-info glyphicon glyphicon-arrow-up\">  {{workout.count}}</button>\r\n  <div class=\"table-responsive\">\r\n    <table class=\"table\">\r\n      <thead>\r\n      <tr>\r\n        <td>Exercise</td>\r\n        <td>Description</td>\r\n        <td>Set</td>\r\n        <td>Reps/Time</td>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr *ngFor=\"let exercise of workout.exercises\">\r\n        <td>{{exercise.exercise}}</td>\r\n        <td>{{exercise.description}}</td>\r\n        <td>{{exercise.set}}</td>\r\n        <td>{{exercise.reps}}</td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -736,7 +729,6 @@ var WorkoutsComponent = (function () {
         this.workoutService = workoutService;
         this.ref = ref;
         this.auth = auth;
-        this.greeting = '';
     }
     WorkoutsComponent.prototype.getWorkouts = function () {
         var _this = this;
@@ -750,9 +742,7 @@ var WorkoutsComponent = (function () {
         return this.auth.isLoggedIn();
     };
     WorkoutsComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.getWorkouts();
-        this.workoutService.sayHello().subscribe(function (result) { _this.greeting = result; });
     };
     WorkoutsComponent.prototype.countUp = function (id) {
         var _this = this;

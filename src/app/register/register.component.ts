@@ -17,10 +17,10 @@ export class RegisterComponent {
 
   register() {
     this.loading = true;
-    this.auth.register(this.model.name, this.model.email, this.model.password)
+    this.auth.register(this.model.email, this.model.password)
       .subscribe(
         data => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/workouts']);
         },
         error => {
           this.loading = false;

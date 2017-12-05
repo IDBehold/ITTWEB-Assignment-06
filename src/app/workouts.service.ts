@@ -15,21 +15,22 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class WorkoutsService {
-  private testUrl = 'api/hello';
-  private apiUrl = 'http://salty-garden-88598.herokuapp.com/api'; // URL to API
+  private workoutUrl = 'api/workouts';
+  private exerciseUrl = 'api/exercises';
+  //private apiUrl = 'http://salty-garden-88598.herokuapp.com/api'; // URL to API
 
   constructor(private http: Http, private auth: AuthenticationService) {
   }
 
   getWorkouts(): Promise<Workout[]> {
-    return this.http.get(this.apiUrl)
+    return this.http.get(this.workoutUrl)
       .toPromise()
       .then(response => response.json() as Workout)
       .catch(this.handleError);
   }
 
   getWorkout(id: string): Promise<Workout> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.workoutUrl}/${id}`;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as Workout)
@@ -37,10 +38,9 @@ export class WorkoutsService {
   }
 
   createWorkout(name: string): Promise<Workout> {
-    const url = `${this.apiUrl}/workout`;
     let headers = this.getHeaders();
     return this.http
-      .post(url, JSON.stringify({name: name}), {
+      .post(this.workoutUrl, JSON.stringify({ name: name }), {
         headers: headers,
       })
       .toPromise()
@@ -49,9 +49,8 @@ export class WorkoutsService {
   }
 
   createExercise(id: string, exercise: string, description: string, set: number, reps: number): Promise<Workout> {
-    const url = `${this.apiUrl}/exercise`;
     return this.http
-      .post(url, JSON.stringify({
+      .post(this.exerciseUrl, JSON.stringify({
         id: id,
         exercise: exercise,
         description: description,
@@ -64,7 +63,7 @@ export class WorkoutsService {
   }
 
   countUp(id: string): Promise<Workout> {
-    const url = `${this.apiUrl}/countUp/${id}`;
+    const url = `${this.workoutUrl}/${id}`;
     return this.http.put(url, {}, {headers: this.getHeaders()})
       .toPromise()
       .then(res => res.json() as Workout)
@@ -72,7 +71,7 @@ export class WorkoutsService {
   }
 
   deleteWorkout(id: string): Promise<void> {
-    const url = `${this.apiUrl}/${id}}`;
+    const url = `${this.workoutUrl}/${id}}`;
     return this.http.delete(url, {headers: this.getHeaders()})
       .toPromise()
       .then(() => null)
@@ -90,10 +89,4 @@ export class WorkoutsService {
     headers.append('Authorization', 'Bearer ' + this.auth.getToken());
     return headers;
   }
-
-  sayHello(): Observable<any> {
-    return this.http.get(this.testUrl).map((response: Response) => {
-        return response.text();
-    });
-}
 }

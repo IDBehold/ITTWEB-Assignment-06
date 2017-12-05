@@ -6,10 +6,9 @@ import 'rxjs/add/operator/map';
 export class AuthenticationService {
   constructor(private http: Http) {
   }
-
-  register(name: string, email: string, password: string) {
-    return this.http.post('https://salty-garden-88598.herokuapp.com/api/register', {
-      name: name,
+  
+  register(email: string, password: string) {
+    return this.http.post('/api/account/register', {
       email: email,
       password: password
     })
@@ -24,7 +23,7 @@ export class AuthenticationService {
   }
 
   login(email: string, password: string) {
-    return this.http.post('https://salty-garden-88598.herokuapp.com/api/login', {email: email, password: password})
+    return this.http.post('api/account/login', {email: email, password: password})
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
         const user = response.json();

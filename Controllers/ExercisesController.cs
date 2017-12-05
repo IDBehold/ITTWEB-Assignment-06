@@ -91,7 +91,9 @@ namespace ITTWEB_Assignment_06.Controllers
       {
         return BadRequest(ModelState);
       }
-      var workout = await _context.Workouts.SingleOrDefaultAsync(w => w.id == exercise.id);
+      var workout = await _context.Workouts
+        .Include(e => e.exercises)
+        .SingleOrDefaultAsync(w => w.id == exercise.id);
       var newExercise = new Exercise
       {
         description = exercise.description,

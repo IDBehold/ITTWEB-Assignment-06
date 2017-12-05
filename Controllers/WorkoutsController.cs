@@ -27,7 +27,7 @@ namespace ITTWEB_Assignment_06.Controllers
     [AllowAnonymous]
     public IEnumerable<Workout> GetWorkouts()
     {
-      return _context.Workouts;
+      return _context.Workouts.Include(e => e.exercises);
     }
 
     // GET: api/Workouts/5
@@ -40,7 +40,9 @@ namespace ITTWEB_Assignment_06.Controllers
         return BadRequest(ModelState);
       }
 
-      var workout = await _context.Workouts.SingleOrDefaultAsync(m => m.id == id);
+      var workout = await _context.Workouts
+        .Include(e => e.exercises)
+        .SingleOrDefaultAsync(m => m.id == id);
 
       if (workout == null)
       {

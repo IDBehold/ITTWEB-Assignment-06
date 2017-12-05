@@ -30,7 +30,7 @@ namespace ITTWEB_Assignment_06
     public void ConfigureServices(IServiceCollection services)
     {
 
-      var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+      var connection = @"Server=(localdb)\MSSQLLocalDB;Initial Catalog=EmbeddedStock;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
       services.AddDbContext<FitnessDbContext>(options => options.UseSqlServer(connection));
       services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connection));
       services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>().AddDefaultTokenProviders();

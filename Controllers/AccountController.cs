@@ -34,13 +34,20 @@ namespace ITTWEB_Assignment_06.Controllers
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] Credentials Credentials)
+    public async Task<IActionResult> Register([FromBody] Credentials credentials)
     {
-      var user = new IdentityUser { UserName = Credentials.Email, Email = Credentials.Email };
-      var result = await _userManager.CreateAsync(user, Credentials.Password);
+      var user = new IdentityUser { UserName = credentials.Email, Email = credentials.Email };
+      var result = await _userManager.CreateAsync(user, credentials.Password);
       if (result.Succeeded)
       {
-        return Ok(user);
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, credentials.Password, false);
+        if (signInResult.Succeeded)
+        {
+          //return new ObjectResult(GenerateToken(credentials.Email));
+          var collection = new Dictionary<string, string>();
+          collection.Add("token", GenerateToken(credentials.Email));
+          return Ok(Json(collection));
+        }
       }
       foreach (var error in result.Errors)
         ModelState.AddModelError(string.Empty, error.Description);
@@ -49,15 +56,6 @@ namespace ITTWEB_Assignment_06.Controllers
 
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] Credentials credentials)
-    {
-      var result = await _signInManager.PasswordSignInAsync(credentials.Email, credentials.Password, isPersistent: false, lockoutOnFailure: false);
-      if (result.Succeeded) return Ok();
-      ModelState.AddModelError(string.Empty, "Invalid login");
-      return BadRequest(ModelState);
-    }
-
-    [HttpPost("jwtLogin")]
-    public async Task<IActionResult> JWTLogin([FromBody] Credentials credentials)
     {
       var user = await _userManager.FindByEmailAsync(credentials.Email);
       if (user == null)
@@ -68,7 +66,10 @@ namespace ITTWEB_Assignment_06.Controllers
       var result = await _signInManager.CheckPasswordSignInAsync(user, credentials.Password, false);
       if (result.Succeeded)
       {
-        return new ObjectResult(GenerateToken(credentials.Email));
+        //return new ObjectResult(GenerateToken(credentials.Email));
+        var collection = new Dictionary<string, string>();
+        collection.Add("token", GenerateToken(credentials.Email));
+        return Ok(collection);
       }
       return BadRequest("Invalid Login");
     }

@@ -12,8 +12,6 @@ import {AuthenticationService} from "../authentication/authentication.service";
 })
 export class WorkoutsComponent implements OnInit {
   workouts: Workout[];
-  greeting = '';
-
 
   constructor(
     private workoutService: WorkoutsService,
@@ -35,7 +33,6 @@ export class WorkoutsComponent implements OnInit {
 
   ngOnInit() {
     this.getWorkouts();
-    this.workoutService.sayHello().subscribe(result => {this.greeting = result;});
   }
 
   countUp(id: string): void{
