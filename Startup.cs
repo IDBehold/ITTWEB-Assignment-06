@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ITTWEB_Assignment_06
 {
@@ -40,9 +42,24 @@ namespace ITTWEB_Assignment_06
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
       });
-      services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
       services.AddCors();
       services.AddMvc();
+      services.AddAuthentication(options =>
+      {
+        options.DefaultAuthenticateScheme = "Jwt";
+        options.DefaultChallengeScheme = "Jwt";
+      }).AddJwtBearer("Jwt", options =>
+      {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateAudience = false,
+          ValidateIssuer = false,
+          ValidateIssuerSigningKey = true,
+          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("thisIsSecretMoreThanTheSlides")),
+          ValidateLifetime = true,
+          ClockSkew = TimeSpan.FromMinutes(5)
+        };
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
